@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "common",
+    "rust-dummy-server",
+    "rust-native-lib",
+]
+resolver = "2"
