@@ -17,5 +17,5 @@ pub struct ProduceRequest {
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct ProduceResponse {
-    pub result: Result<i32, i32>, // offset and error
+    pub result: i32,
 }

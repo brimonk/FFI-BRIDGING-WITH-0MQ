@@ -1,4 +1,6 @@
 ﻿using System;
+using MessagePack;
+using ZeroMQ;
 
 // Brian Chrzanowski
 //
@@ -18,13 +20,64 @@
 // - Use it
 // - confirm that the entire client <-> client lib <-> server flow works
 
-namespace MyApp
+namespace ExampleDotnetApp
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using (var socket = new ZSocket(ZSocketType.REQ))
+            {
+                socket.Connect("tcp://localhost:5500");
+
+                for (int i = 0; i < 10; i++)
+                {
+                    var request = new ProduceRequest("TOPIC-GOES-HERE", 4, null);
+                    byte[] request_buffer = MessagePackSerializer.Serialize(request);
+
+                    var message = new ZMessage(new List<ZFrame>() { new ZFrame(request_buffer) });
+
+                    socket.Send(message);
+
+                    var response_message = socket.ReceiveMessage();
+                    var response_buffer = new List<byte>();
+
+                    foreach (var frame in response_message.AsEnumerable())
+                    {
+                        response_buffer.AddRange(frame.Read());
+                    }
+
+                    var response = MessagePackSerializer.Deserialize<ProduceResponse>(response_buffer.ToArray());
+
+                }
+            }
         }
+    }
+
+    [MessagePackObject]
+    public class ProduceRequest
+    {
+        [Key(0)]
+        public string? key;
+
+        [Key(1)]
+        public string topic;
+
+        [Key(2)]
+        public int partition;
+
+        public ProduceRequest(string topic, int partition, string? key)
+        {
+            this.key = key;
+            this.topic = topic;
+            this.partition = partition;
+        }
+    }
+
+    [MessagePackObject]
+    public class ProduceResponse
+    {
+        [Key(0)]
+        public int result;
     }
 }

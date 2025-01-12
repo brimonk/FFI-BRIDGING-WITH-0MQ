@@ -4,9 +4,16 @@ use serde::Serialize;
 fn main() {
     println!("Connecting to hello world server...");
     let context = zmq::Context::new();
-    let requester = context.socket(zmq::REQ).unwrap();
 
+    let requester = context.socket(zmq::REQ).unwrap();
+    let responder = context.socket(zmq::REP).unwrap();
+
+    assert!(responder.connect("tcp://localhost:5500").is_ok());
     assert!(requester.connect("tcp://localhost:5555").is_ok());
+
+    loop {
+        
+    }
 
     for reqnum in 0..10 {
         let request = common::ProduceRequest {
@@ -27,13 +34,10 @@ fn main() {
 
         let response = rmp_serde::from_slice::<common::ProduceResponse>(resp.as_slice()).unwrap();
 
-        match response.result {
-            Ok(ok) => {
-                println!("Produce was OK. Offset: {ok}");
-            }
-            Err(err) => {
-                println!("Produce was NOT OK. Error: {err}");
-            }
+        if response.result == 0 {
+            println!("Produce was OK.");
+        } else {
+            println!("Produce was NOT OK.");
         }
     }
 }

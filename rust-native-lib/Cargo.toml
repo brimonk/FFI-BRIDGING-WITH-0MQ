@@ -3,9 +3,19 @@ name = "rust-native-lib"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "rust-native-bin"
+path = "src/main.rs"
+
+[lib]
+crate-type = ["cdylib"]
+name = "rust_native_lib"
+path = "src/lib.rs"
+
 [dependencies]
 zmq = "0.10.0"
 common = { path = "../common" }
 rmp = "0.8.14"
 rmp-serde = "1.3.0"
 serde = "1.0.217"
+zmq-sys = "0.12.0"

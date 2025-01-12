@@ -2,6 +2,6 @@
 members = [
     "common",
     "rust-dummy-server",
-    "rust-native-lib",
+    "rust-native-lib", "test-ipc",
 ]
 resolver = "2"

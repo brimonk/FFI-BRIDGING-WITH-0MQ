@@ -8,8 +8,6 @@ fn main() {
 
     assert!(responder.bind("tcp://*:5555").is_ok());
 
-    let mut offset: i32 = 0;
-
     loop {
         let request_buffer = responder.recv_bytes(0).unwrap();
         let request =
@@ -23,14 +21,12 @@ fn main() {
         // do real work here...
 
         let response = ProduceResponse {
-            result: Ok(offset)
+            result: 0
         };
 
         let mut response_buffer = Vec::new();
         response.serialize(&mut Serializer::new(&mut response_buffer)).unwrap();
 
         responder.send(response_buffer, 0).unwrap();
-
-        offset += 1;
     }
 }
