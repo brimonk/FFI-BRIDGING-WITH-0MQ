@@ -1,16 +1,5 @@
 use std::{ffi::{c_void, CString}, sync::{atomic::AtomicBool, Arc, OnceLock}};
 
-// NOTE (Brian)
-//
-// Because Rust devs are all composed of braindead retards that are scared of
-// asterisks on their types, I'm 99% certain that I need to either fork the
-// ZMQ repo to actually get the real context pointer, or just use the sys
-// crate directly.
-//
-// I'm leaning towards the sys crate directly because while the main message
-// loop will be unsafe, the library (should) only have a single message loop
-// for shoveling messages between languages.
-
 pub struct Context {
     pub run: Arc<AtomicBool>,
     pub ctx: *mut c_void,
