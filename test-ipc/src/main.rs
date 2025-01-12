@@ -1,5 +1,4 @@
 use std::{sync::OnceLock, thread, time::Duration};
-
 use zmq::Message;
 
 static ZMQ_CONTEXT: OnceLock<zmq::Context> = OnceLock::new();
@@ -33,7 +32,7 @@ fn main() {
 
     let socket = context.socket(zmq::REP).unwrap();
     // socket.bind(&IPC_REFERENCE).unwrap();
-    socket.bind("ipc://*").unwrap();
+    socket.bind("ipc://./some-path.ipc").unwrap();
 
     let endpoint = socket.get_last_endpoint().unwrap().unwrap();
     println!("ENDPOINT: {}", endpoint);
@@ -48,4 +47,6 @@ fn main() {
     }
 
     join.join().unwrap();
+
+    std::fs::remove_file("./some-path.ipc").unwrap();
 }
