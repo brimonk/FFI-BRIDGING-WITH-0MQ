@@ -50,5 +50,5 @@ fn main() {
 
     // join.join().unwrap();
 
-    std::fs::remove_file("./some-path.ipc").unwrap();
+    std::fs::remove_file("\\TESTING-IPC.ipc").unwrap();
 }

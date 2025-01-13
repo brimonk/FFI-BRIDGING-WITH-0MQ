@@ -62,30 +62,37 @@ namespace ExampleDotnetApp
         }
     }
 
-    [MessagePackObject]
     public class ProduceRequest
     {
-        [Key(0)]
         public string? key;
-
-        [Key(1)]
         public string topic;
-
-        [Key(2)]
         public int partition;
-
-        public ProduceRequest(string topic, int partition, string? key)
-        {
-            this.key = key;
-            this.topic = topic;
-            this.partition = partition;
-        }
     }
 
-    [MessagePackObject]
-    public class ProduceResponse
-    {
-        [Key(0)]
-        public int result;
-    }
+    // [MessagePackObject]
+    // public class ProduceRequest
+    // {
+    //     [Key(0)]
+    //     public string? key;
+
+    //     [Key(1)]
+    //     public string topic;
+
+    //     [Key(2)]
+    //     public int partition;
+
+    //     public ProduceRequest(string topic, int partition, string? key)
+    //     {
+    //         this.key = key;
+    //         this.topic = topic;
+    //         this.partition = partition;
+    //     }
+    // }
+
+    // [MessagePackObject]
+    // public class ProduceResponse
+    // {
+    //     [Key(0)]
+    //     public int result;
+    // }
 }
