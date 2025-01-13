@@ -1,0 +1,3 @@
+[submodule "clrzmq4"]
+	path = clrzmq4
+	url = https://github.com/brimonk/clrzmq4.git

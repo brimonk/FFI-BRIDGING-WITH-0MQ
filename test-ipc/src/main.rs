@@ -32,21 +32,23 @@ fn main() {
 
     let socket = context.socket(zmq::REP).unwrap();
     // socket.bind(&IPC_REFERENCE).unwrap();
-    socket.bind("ipc://./some-path.ipc").unwrap();
+    // socket.bind("ipc://./some-path.ipc").unwrap();
+    // ipc://\\TESTING-IPC.ipc
+    socket.bind("ipc://\\TESTING-IPC.ipc").unwrap();
 
     let endpoint = socket.get_last_endpoint().unwrap().unwrap();
     println!("ENDPOINT: {}", endpoint);
 
-    let join = std::thread::spawn(|| { client(endpoint); });
+    // let join = std::thread::spawn(|| { client(endpoint); });
 
     for _ in 0..10 {
         let msg = socket.recv_bytes(0).unwrap();
         let str = String::from_utf8(msg).unwrap();
         println!("Got message: {}", str);
-        socket.send("", 0).unwrap();
+        socket.send("EMPTY", 0).unwrap();
     }
 
-    join.join().unwrap();
+    // join.join().unwrap();
 
     std::fs::remove_file("./some-path.ipc").unwrap();
 }
